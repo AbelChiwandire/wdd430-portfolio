@@ -1,6 +1,8 @@
 import { getProjects } from '../../lib/projects-db';
 import type { Project } from '../../lib/projects-db';
 
+export const dynamic = 'force-dynamic';
+
 export default async function ProjectsPage() {
     let projects: Project[];
     try {
