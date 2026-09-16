@@ -1,16 +1,18 @@
+import { getProjects } from '../../lib/projects-db';
 import type { Project } from '../../lib/projects-db';
-import { getBaseUrl } from '../../lib/base-url';
 
 export default async function ProjectsPage() {
-    const res = await fetch(`${getBaseUrl()}/api/projects`);
-    if (!res.ok) {
+    let projects: Project[];
+    try {
+        projects = await getProjects();
+    } catch (error) {
+        console.error('getProjects() failed:', error);
         return (
             <main>
                 <p className="text-3xl font-bold mb-4">Failed to load projects</p>
             </main>
         );
     }
-    const projects: Project[] = await res.json();
     if (!projects || projects.length === 0) {
         return (
             <main>

@@ -10,7 +10,7 @@ export async function GET(request: Request): Promise<Response> {
         return Response.json({ error: 'Invalid type' }, { status: 400 });
     }
 
-    const projects: Project[] = getProjects(type);
+    const projects: Project[] = await getProjects(type);
     
     return Response.json(projects)
 }
