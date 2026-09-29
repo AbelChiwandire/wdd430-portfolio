@@ -5,6 +5,15 @@ import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { validateInt } from './validation';
+import { signIn } from '@/auth';
+import { AuthError } from 'next-auth';
+import { auth } from '@/auth';
+
+async function requireOwnerSession() {
+    const session = await auth();
+    if (!session?.user) throw new Error('Not authenticated');
+    return session;
+}
 
 const currentYear = new Date().getFullYear();
 
@@ -47,6 +56,8 @@ function getValidatedProjectData(formData: FormData) {
 }
 
 export async function createProject(prevState: State, formData: FormData): Promise<State> {
+    await requireOwnerSession();
+
     const validatedData = getValidatedProjectData(formData);
     if(!validatedData.success) {
         const tree = z.treeifyError(validatedData.error);
@@ -81,6 +92,8 @@ export async function createProject(prevState: State, formData: FormData): Promi
 }
 
 export async function updateProject(id: string, prevState: State, formData: FormData): Promise<State> {
+    await requireOwnerSession();
+
     const numericId = validateInt(id);
 
     if (numericId === null) {
@@ -128,6 +141,8 @@ export async function updateProject(id: string, prevState: State, formData: Form
 }
 
 export async function deleteProject(id: string) {
+    await requireOwnerSession();
+    
     const numericId = validateInt(id);
 
     if (numericId === null) {
@@ -147,4 +162,23 @@ export async function deleteProject(id: string) {
 
     revalidatePath('/projects');
     redirect('/projects');
+}
+
+export async function authenticate(
+    prevState: string | undefined,
+    formData: FormData,
+) {
+    try {
+        await signIn('credentials', formData);
+    } catch (error) {
+        if (error instanceof AuthError) {
+            switch (error.type) {
+                case 'CredentialsSignin':
+                    return 'Invalid email or password.';
+                default:
+                    return 'Something went wrong.';
+            }
+        }
+        throw error;
+    }
 }
