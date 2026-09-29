@@ -1,20 +1,9 @@
 import ProjectList from '@/components/ProjectList';
-const projects = [
-  {
-    title: 'StockFolio',
-    description: 'A web application to track and manage stock portfolios.',
-    technologies: ['HTML', 'CSS', 'JavaScript'],
-    link: 'https://stockfolio-1nns.onrender.com'
-  },
-  {
-    title: 'Property Management API',
-    description: 'An API for managing property listings and related data.',
-    technologies: ['Node.js', 'Express', 'MongoDB'],
-    link: 'https://property-management-api-1ai4.onrender.com'
-  }
-];
+import { getFeaturedProjects } from '@/lib/projects-db';
 
-export default function Home() { 
+export default async function Home() {
+  const projects = await getFeaturedProjects();
+
   return (
     <main className="container mx-auto px-4 py-12">
       <section className="text-center py-12">

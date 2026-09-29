@@ -6,6 +6,7 @@ export interface Project {
   description: string;
   type: 'opensource' | 'school';
   technologies: string[];
+  yearCompleted: number;
   link?: string;
 }
 
@@ -21,6 +22,15 @@ export async function getProjects(type?: string | null): Promise<Project[]> {
   `;
   return rows;
   
+}
+
+export async function getFeaturedProjects(): Promise<Project[]> {
+  const { rows } = await sql<Project>`
+    SELECT * FROM projects
+    ORDER BY id DESC
+    LIMIT 2
+  `;
+  return rows;
 }
 
 export async function getProjectById(id: number): Promise<Project | null> {

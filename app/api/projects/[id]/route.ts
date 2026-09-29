@@ -1,11 +1,12 @@
 import { getProjectById } from '../../../../lib/projects-db';
+import { validateInt } from '../../../../lib/validation';
 
 export async function GET(_request: Request,
     { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
-    const numericId = Number(id);
+    const numericId = validateInt(id);
     
-    if (isNaN(numericId)) {
+    if (numericId === null) {
         return Response.json({ error: 'Invalid project ID' }, { status: 400 });
     }
 

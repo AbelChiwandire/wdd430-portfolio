@@ -1,4 +1,6 @@
 import { getProjects } from '@/lib/projects-db';
+import ProjectList from './ProjectList';
+import DeleteProjectButton from '@/components/DeleteProjectButton';
 
 async function getSchoolProjects() {
     try {
@@ -21,16 +23,11 @@ export default async function SchoolProjectList() {
     }
 
     return (
-        <ul className="mt-4">
-            {projects.map((project) => (
-                <li key={project.id} className="mb-2">
-                    <h2 className="font-semibold">{project.title}</h2>
-                    <p className="text-slate-600">{project.description}</p>
-                    <p className="text-slate-600">
-                        Technologies: {project.technologies.join(', ')}
-                    </p>
-                </li>
-            ))}
-        </ul>
+        <ProjectList
+            projects={projects}
+            renderActions={(project) => (
+                <DeleteProjectButton id={project.id} />
+            )}
+        />
     );
 }

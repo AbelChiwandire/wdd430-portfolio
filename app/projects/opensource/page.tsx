@@ -1,5 +1,7 @@
 import { getProjects } from '../../../lib/projects-db';
 import type { Project } from '../../../lib/projects-db';
+import ProjectList from '../../../components/ProjectList';
+import DeleteProjectButton from '@/components/DeleteProjectButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -27,15 +29,12 @@ export default async function OpenSourcePage() {
         <main>
             <h1 className="text-3xl font-bold mb-4">Open Source Projects</h1>
             <p className="text-lg text-slate-600">Here you can find a list of my open source contributions and projects.</p>
-            <ul className="mt-4">
-                {projects.map((project) => (
-                    <li key={project.id} className="mb-2">
-                        <h2 className="font-semibold">{project.title}</h2>
-                        <p className="text-slate-600">{project.description}</p>
-                        <p className="text-slate-600">Technologies: {project.technologies.join(', ')}</p>
-                    </li>
-                ))}
-            </ul>
+            <ProjectList
+                projects={projects}
+                renderActions={(project) => (
+                    <DeleteProjectButton id={project.id} />
+                )}
+            />
         </main>
     );
 }

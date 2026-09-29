@@ -1,11 +1,15 @@
+import type { ReactNode } from 'react';
+
 interface ProjectCardProps {
+    id: number;
     title: string;
     description: string;
     technologies: string[];
     link?: string;
+    actions?: ReactNode;
 }
 
-export default function ProjectCard({ title, description, technologies, link }: ProjectCardProps) {
+export default function ProjectCard({ title, description, technologies, link, actions }: ProjectCardProps) {
     return (
         <article className="p-4 border-l-4 border-teal-700 bg-slate-100 rounded">
             <h2 className="text-xl font-bold mb-2">{title}</h2>
@@ -25,6 +29,7 @@ export default function ProjectCard({ title, description, technologies, link }: 
                     </a>
                 </p>
             )}
+            {actions}
         </article>
     )
 }

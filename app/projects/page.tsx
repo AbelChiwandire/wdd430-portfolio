@@ -1,5 +1,8 @@
+import Link from 'next/link';
 import { getProjects } from '../../lib/projects-db';
 import type { Project } from '../../lib/projects-db';
+import ProjectList from '../../components/ProjectList';
+import DeleteProjectButton from '../../components/DeleteProjectButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -25,17 +28,30 @@ export default async function ProjectsPage() {
     
     return (
         <main>
-            <h1 className="text-3xl font-bold mb-4">Projects Overview</h1>
+            <div className="flex items-center justify-between mb-4">
+                <h1 className="text-3xl font-bold">Projects Overview</h1>
+                <Link
+                    href="/projects/create"
+                    className="rounded-md bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800"
+                >
+                    New Project
+                </Link>
+            </div>
             <p className="text-lg text-slate-600">Browse through the list of projects I have worked on.</p>
-            <ul className="mt-4">
-                {projects.map((project) => (
-                    <li key={project.id} className="mb-2">
-                        <h2 className="font-semibold">{project.title}</h2>
-                        <p className="text-slate-600">{project.description}</p>
-                        <p className="text-slate-600">Technologies: {project.technologies}</p>
-                    </li>
-                ))}
-            </ul>
+            <ProjectList
+                projects={projects}
+                renderActions={(project) => (
+                    <div className="mt-2 flex items-center gap-3">
+                        <Link
+                            href={`/projects/${project.id}/edit`}
+                            className="text-sm text-teal-700 hover:underline"
+                        >
+                            Edit
+                        </Link>
+                        <DeleteProjectButton id={project.id} />
+                    </div>
+                )}
+            />
         </main>
     );
 }
