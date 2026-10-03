@@ -1,4 +1,5 @@
-import { LoginForm } from '@/components/login-form'; // to be implemented
+import { LoginForm } from '@/components/login-form';
+import { Suspense } from 'react';
 
 export default function LoginPage() {
   return (
@@ -8,7 +9,9 @@ export default function LoginPage() {
           <h1 className="text-3xl font-bold tracking-tight text-slate-900">Welcome back</h1>
           <p className="mt-2 text-sm text-slate-600">Sign in to continue to your portfolio.</p>
         </div>
-        <LoginForm />
+        <Suspense>
+          <LoginForm />
+        </Suspense>
       </section>
     </main>
   );
