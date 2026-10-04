@@ -1,21 +1,44 @@
+import { cache } from 'react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getProjectById } from '@/lib/projects-db';
 import { validateInt } from '@/lib/validation';
 
-export default async function ProjectPage({
-    params,
-}: {
+type Props = {
     params: Promise<{ id: string }>;
-}) {
-    const { id } = await params;
-    const projectId = validateInt(id);
+}
 
-    if (projectId === null) {
-        notFound();
+const getProject = cache(async (id: string) => {
+    const projectId = validateInt(id);
+    if (projectId === null) return null;
+    return getProjectById(projectId);
+})
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const { id } = await params;
+    const project = await getProject(id);
+
+    if (!project) {
+        return {
+            title: 'Project Not Found',
+            description: 'The requested project could not be found.',
+        };
     }
 
-    const project = await getProjectById(projectId);
+    return {
+        title: project.title,
+        description: project.description,
+        openGraph: {
+            title: project.title,
+            description: project.description,
+        }
+    };
+}
+
+export default async function ProjectPage({ params }: Props) {
+    const { id } = await params;
+    const project = await getProject(id);
 
     if (!project) {
         notFound();

@@ -4,8 +4,13 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Abel Chiwandire Portfolio',
-  description: 'Portfolio website of Abel Chiwandire',
+  title: {
+    default: 'Abel Chiwandire | Project Portfolio',
+    template: '%s | Project Portfolio',
+  },
+  description:
+    'A portfolio of web development projects.',
+  metadataBase: new URL('https://wdd430-portfolio-three.vercel.app'),
 };
 
 export default function RootLayout({

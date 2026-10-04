@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import Link from 'next/link';
 
 interface ProjectCardProps {
     id: number;
@@ -9,7 +10,7 @@ interface ProjectCardProps {
     actions?: ReactNode;
 }
 
-export default function ProjectCard({ title, description, technologies, link, actions }: ProjectCardProps) {
+export default function ProjectCard({ id, title, description, technologies, link, actions }: ProjectCardProps) {
     return (
         <article className="p-4 border-l-4 border-teal-700 bg-slate-100 rounded">
             <h2 className="text-xl font-bold mb-2">{title}</h2>
@@ -17,18 +18,9 @@ export default function ProjectCard({ title, description, technologies, link, ac
             <p className="text-sm text-slate-700">
                 <strong>Technologies:</strong> {technologies.join(', ')}
             </p>
-            {link && (
-                <p className="mt-2">
-                    <a
-                        href={link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-teal-700 hover:underline"
-                    >
-                        View Project
-                    </a>
-                </p>
-            )}
+            <Link href={`/projects/${id}`} className="text-teal-700 hover:underline">
+                View Project Details
+            </Link>
             {actions}
         </article>
     )

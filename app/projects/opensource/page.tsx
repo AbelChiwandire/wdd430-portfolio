@@ -2,6 +2,11 @@ import { getProjects } from '../../../lib/projects-db';
 import type { Project } from '../../../lib/projects-db';
 import ProjectList from '../../../components/ProjectList';
 import DeleteProjectButton from '@/components/DeleteProjectButton';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Open Source',
+};
 
 export const dynamic = 'force-dynamic';
 
